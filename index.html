@@ -29,7 +29,9 @@
             padding: 0 50px;
         }
 
-        header img {
+        header a img {
+            display: block;
+            max-width: calc(100% - 100px);
             max-height: 180px;
         }
 
@@ -40,6 +42,33 @@
 
             width: 100%;
             box-sizing: border-box;
+            word-break: break-word;
+        }
+
+        button.print {
+            background-color: rgba(87, 87, 87, 0.085);
+            padding: 5px;
+            border: 1px black solid;
+            cursor: pointer;
+            position: fixed;
+            top: 0%;
+            right: 0;
+            opacity: 10%;
+            transition-duration: 0.5s;
+        }
+
+        button.print:hover {
+            opacity: 90%;
+        }
+
+        @media only screen and (max-width: 500px) {
+            main {
+                padding: 0 30px;
+            }
+
+            header div {
+                padding: 0 30px;
+            }
         }
 
         @font-face {
@@ -53,8 +82,8 @@
         h4,
         h5,
         h6 {
-            margin-top: 1.25em;
-            margin-bottom: 0.75em;
+            margin-top: 1em;
+            margin-bottom: 0.25em;
 
             color: #ff0000;
             font-family: "Barlow Semi Condensed", Helvetica, Arial, sans-serif;
@@ -62,6 +91,67 @@
 
         h2 {
             text-decoration: underline;
+        }
+
+        @media print {
+
+            #overview {
+                display: none;
+                ;
+            }
+
+            a[href$='#overview'] {
+                display: none;
+            }
+
+            .Pinvisible {
+                display: none;
+            }
+
+            h1,
+            h2,
+            h3,
+            h4,
+            h5,
+            h6 {
+                margin-top: 0.4em;
+                margin-bottom: 0.1em;
+
+                page-break-inside: avoid;
+            }
+
+            h2 {
+                text-decoration: none;
+            }
+
+            h1::after,
+            h2::after,
+            h3::after,
+            h4::after,
+            h5::after,
+            h6::after {
+
+                content: "";
+                display: block;
+                height: 100px;
+                margin-bottom: -100px;
+            }
+
+
+
+            main {
+                overflow: visible !important;
+                line-height: 1em;
+
+            }
+
+            * {
+                overflow: visible !important;
+            }
+
+            body {
+                display: block;
+            }
         }
     </style>
 </head>
@@ -74,6 +164,9 @@
                     alt="End Fossil Now!">
             </a>
         </div>
+        <button class='Pinvisible print' onclick="window.print()">
+            <img src="printer.svg" alt="Text drucken" height="35" width="35">
+        </button>
     </header>
     <main>
         <h1>How to Occupy!</h1>
@@ -134,7 +227,7 @@
         <h2 id='H2'>Mobilisierung</h2>
         <h3>Was
             haben wir gemacht?</h3>- Im August angefangen mit ein paar Menschen und in linken Gruppen in
-        Göttingen mobilisiert-&gt; viel der Orga ist aber erst in den Wochen vor der Besetzung passiert-
+        Göttingen mobilisiert<br>-&gt; viel der Orga ist aber erst in den Wochen vor der Besetzung passiert<br>-
         Flyer gedruckt und auf dem Global Strike verteilt<br>- verschiedene Offene Treffen vor der Besetzung<br>- ein
         Aktionsplenum kurz vor der Besetzung mit genauer Beschreibung, was der Plan ist<h3>Hat gut
             geklappt:</h3>- Mobilisierung für Vortrag durch Plakate, Flyer, Social Media<br>- zum Teil
