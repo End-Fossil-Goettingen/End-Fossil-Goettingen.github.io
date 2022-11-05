@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Converter</title>
+    <script src="https://unpkg.com/showdown/dist/showdown.min.js"></script>
+    <style>
+        #output {
+            border: 1px solid black;
+        }
+    </style>
+</head>
+<body>
+    <label for="basisfile">Which html file should I use as a basis for the static website?</label>
+    <input id="upFile" type="file" name="basisfile" accept=".html"><br>
+    <label for="htmlTitle">Which title should document have?</label>
+    <input id="htmlT" type="text" name="htmlTitle"><br>
+    If nothing is select, will use standard end fossil file type. I case of special file, will just add new main. <br>
+    <textarea name="md" id="md" cols="30" rows="10"></textarea>
+    <button onclick="convert()">Create</button>
+    <br><br><br>
+    <div id="output"></div>
+    <script>
+        var output = null;
+        function loadFileServer(filePath) {
+            return new Promise((resolve, reject) => {
+                var request = new XMLHttpRequest();
+                request.open('GET', "template.html", true);
+                request.responseType = 'blob';
+                request.onload = function () {
+                    var reader = new FileReader();
+                    reader.readAsText(request.response);
+                    reader.onload = function (e) {
+                        console.log(e.target.result)
+                        resolve(e.target.result)
+                    };
+                };
+                request.send();
+            })
+
+        }
+        function loadFileLocally() {
+            var upfile = document.getElementById('upFile');
+            if (upfile.value != "") {
+                var fr = new FileReader();
+                fr.onload = function () {
+                    var content = this.result;
+                    console.log(content)
+                    return content;
+                }
+                var file = upfile.files[0];
+                fr.readAsText(file);
+            }
+            else {
+                return null;
+            }
+        }
+
+        /*instructions:
+        {"main": "what to inject instead of it"}
+        */
+        function transformHTML(htmltext, injectMAIN, injectTITLE) {
+            let newhtml = "";
+
+            var inTag = false;
+
+
+            var injectedMAIN = false;
+            var injectedTITLE = false
+            var Tag = "";
+            var Tags = [];
+            var obj = [];
+            for (var i = 0; i < htmltext.length; i++) {
+                if (inTag && htmltext[i] != ">") {
+                    Tag += htmltext[i]
+                }
+
+                else if (htmltext[i] == "<") {
+                    inTag = true;
+                }
+                else if (htmltext[i] == ">") {
+                    inTag = false;
+                    if (Tag[0] == "/") {
+                        /*if (Tags[Tags.length - 1] == "main") {
+                            newhtml += "</main>";
+                        } else if (Tags[Tags.length - 1] == "title") {
+                            newhtml += "</title>";
+                        }*/
+
+
+                        // remove Tag from Tags
+                        Tags.pop();
+                        Tag = "";
+
+                    } else {
+                        if (Tag != "br") {
+                            Tags.push(Tag)
+                        }
+                        /*if (Tags[Tags.length - 1] == "main") {
+                            newhtml += "<main>"
+
+                        } else if (Tags[Tags.length - 1] == "title") {
+                            newhtml += "<title>"
+
+                        }*/
+                        Tag = "";
+                    }
+
+
+                }
+
+
+
+                /* else if (Tags.includes("title")) {
+                      if (!injectedTITLE) {
+                          newhtml += injectTITLE;
+                          injectedTITLE = true;
+                      }
+                  }*/
+
+                newhtml += htmltext[i]
+
+                if (Tags.includes("main")) {
+                    //skip
+                    if (!injectedMAIN) {
+                        newhtml += injectMAIN;
+                        injectedMAIN = true;
+                    }
+                } else if (Tags.includes("title")) {
+                    if (!injectedTITLE) {
+                        newhtml += injectTITLE;
+                        injectedTITLE = true;
+                    }
+                }
+
+            }
+            return newhtml;
+
+        }
+        function download(filename, text) {
+            var element = document.createElement('a');
+            element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+            element.setAttribute('download', filename);
+
+            element.style.display = 'none';
+            document.body.appendChild(element);
+
+            element.click();
+
+            document.body.removeChild(element);
+        }
+
+        async function convert() {
+            var text = document.getElementById('md').value;
+            var title = document.getElementById('htmlT').value;
+            console.log(text)
+            var converter = new showdown.Converter(),
+                mainhtml = converter.makeHtml(text);
+            console.log(mainhtml)
+
+            //get basis
+            var basisHTML = loadFileLocally();
+            if (basisHTML == null) {
+                basisHTML = await loadFileServer()
+            }
+
+            console.log(basisHTML)
+
+            var newHTML = transformHTML(basisHTML, mainhtml, title)
+            output = newHTML;
+            console.warn(output)
+
+            var DOM_output = document.getElementById('output');
+            DOM_output.innerText = newHTML
+
+            download(title + ".html", output)
+
+
+        }
+    </script>
+</body>
+</html>
