@@ -18,7 +18,8 @@
     <label for="htmlTitle">Which title should document have?</label>
     <input id="htmlT" type="text" name="htmlTitle"><br>
     If nothing is select, will use standard end fossil file type. In case of special file, will just add new main and title text at beginning of each DOM element. <br>
-    Be aware, your custom html file will need <main></main> and <title></title> tags, this script can only insert your inputs when the two are given!<br>
+    Be aware, your custom html file will need <pre><main></main> and <title></title></pre> tags, this script can only insert your inputs when the two are given!<br>
+    Text can be written in markdown, which will be transformed to html. (using showdown.js converster)<br>
     <textarea name="md" id="md" cols="30" rows="10"></textarea>
     <button onclick="convert()">Create</button>
     <br><br><br>
