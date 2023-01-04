@@ -17,7 +17,8 @@
     <input id="upFile" type="file" name="basisfile" accept=".html"><br>
     <label for="htmlTitle">Which title should document have?</label>
     <input id="htmlT" type="text" name="htmlTitle"><br>
-    If nothing is select, will use standard end fossil file type. In case of special file, will just add new main. <br>
+    If nothing is select, will use standard end fossil file type. In case of special file, will just add new main and title text at beginning of each DOM element. <br>
+    Be aware, your custom html file will need <main></main> and <title></title> tags, this script can only insert your inputs when the two are given!<br>
     <textarea name="md" id="md" cols="30" rows="10"></textarea>
     <button onclick="convert()">Create</button>
     <br><br><br>
@@ -72,56 +73,36 @@
             var Tag = "";
             var Tags = [];
             var obj = [];
+            // looping over html file
             for (var i = 0; i < htmltext.length; i++) {
+                // if inside of <tag>, add to current Tag
                 if (inTag && htmltext[i] != ">") {
                     Tag += htmltext[i]
                 }
-
+                // noticing start of <tag>
                 else if (htmltext[i] == "<") {
                     inTag = true;
                 }
+                // noticing end of <tag>
                 else if (htmltext[i] == ">") {
                     inTag = false;
+                    // Tag gets removed or added to list of nested tags
+                    //      gets removed
                     if (Tag[0] == "/") {
-                        /*if (Tags[Tags.length - 1] == "main") {
-                            newhtml += "</main>";
-                        } else if (Tags[Tags.length - 1] == "title") {
-                            newhtml += "</title>";
-                        }*/
-
-
-                        // remove Tag from Tags
                         Tags.pop();
-                        Tag = "";
-
+                    //      gets added
                     } else {
                         if (Tag != "br") {
                             Tags.push(Tag)
                         }
-                        /*if (Tags[Tags.length - 1] == "main") {
-                            newhtml += "<main>"
-
-                        } else if (Tags[Tags.length - 1] == "title") {
-                            newhtml += "<title>"
-
-                        }*/
-                        Tag = "";
                     }
-
-
+                    // clear current Tag
+                    Tag = "";
                 }
 
-
-
-                /* else if (Tags.includes("title")) {
-                      if (!injectedTITLE) {
-                          newhtml += injectTITLE;
-                          injectedTITLE = true;
-                      }
-                  }*/
-
+                // adding every char of html file to new html
                 newhtml += htmltext[i]
-
+                // but also adding new text at start of main and title object
                 if (Tags.includes("main")) {
                     //skip
                     if (!injectedMAIN) {
@@ -134,11 +115,10 @@
                         injectedTITLE = true;
                     }
                 }
-
             }
             return newhtml;
-
         }
+        
         function download(filename, text) {
             var element = document.createElement('a');
             element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
