@@ -248,7 +248,7 @@
             document.getElementById('wrapmail').innerHTML = '<a href="' + link + '"><button id="mail">Mail an Uni verfassen</button></a>'
 
             // inserting values
-            document.getElementById('mailto').value = rndmMail["mailto"]
+            document.getElementById('mailto').value = rndmMail["mailto"].replace(" ", ",")
             document.getElementById('subject').value = rndmMail["subject"]
             var textarea = document.getElementById('body')
             textarea.value = rndmMail["body"]
