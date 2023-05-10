@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="de">
 
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title></title>
+    <title>Unterstützerschreiben</title>
     <style>
         body {
             display: flex;
@@ -21,6 +21,7 @@
 
         header {
             border-bottom: 5px dashed rgba(0, 0, 0, 0.085);
+            overflow: hidden;
         }
 
         header div {
@@ -31,15 +32,18 @@
 
         header img {
             max-height: 180px;
+
         }
 
         main {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 0 50px;
+            padding: 20px 50px;
 
             width: 100%;
             box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
         }
 
         @font-face {
@@ -59,13 +63,56 @@
             color: #ff0000;
             font-family: "Barlow Semi Condensed", Helvetica, Arial, sans-serif;
         }
+
+        button,
+        input {
+            margin: 5px 0;
+        }
+
+        div.iwrap {
+            display: flex;
+            flex-direction: row;
+            ;
+        }
+
+        div.iwrap input {
+            flex-grow: 1;
+            align-self: flex-end
+        }
+
+        button {
+            border: #ff0000 solid 3px;
+            padding: 5px 0px;
+            background-color: white;
+            font-size: 18px;
+            cursor: pointer;
+        }
+
+        button#mail {
+            background-color: #ff0000;
+            color: white;
+        }
+
+        button#mail a {
+            color: white;
+            text-decoration: none;
+        }
+
+        div#wrapmail button {
+            width: 100%;
+            font-weight: bolder;
+        }
+
+        textarea {
+            resize: vertical;
+        }
     </style>
 </head>
 
 <body>
     <header>
         <div>
-            <a href="https://endfossil.com/" rel="home">
+            <a href="https://goettingen.endfossil.de/" rel="home">
                 <img src="https://endfossil.de/wp-content/uploads/2022/10/banner-site-1024x430.png"
                     alt="End Fossil Now!">
             </a>
@@ -73,20 +120,210 @@
     </header>
 
     <main>
-      <h1>Eine Repositorium der Studi Aktivisten Gruppe von End Fossil: Occupy!</h1>
-      <h2>Übersicht Resourcen</h2>
-      <pre>
-	o1: 
-		<a href="./o1/en.html">learn about the things we wish we had done differently in our first occupation</a>
-		<a href="./o1/index.html">lerne über die Dinge, die wir in der ersten Bestzung besser machen würden</a>
-	<a href="./converter.html">converter.html</a>: Erstelle Dokumente im End Fossil Style
-	Klima Café:
-		11.12.2022 LNG in Deutschland
-		18.12.2022 Utopien
-		<a href="./klimacafé/03_Kohle/index.html">15.01.2023 Kohle in Deutschland</a>
-      </pre>
 
+        <button id="generate">Neue Mail generieren</button>
+        <div class="iwrap">Empfänger:
+            <input type="text" id="mailto" readonly>
+        </div>
+        <div class="iwrap">Betreff:
+            <input type="text" id="subject" readonly>
+        </div>
+        <textarea name="" id="body" cols="30" rows="10" placeholder="E-Mail Text" readonly></textarea>
+        <div id="wrapmail"></div>
+        <!-- ADMIN - AREA -->
+        <button id="add" style="display:none;">Mail zu Datenbank hinzufügen</button>
+        <button id="downl" style="display:none;">Datenbank herunterladen</button>
     </main>
 </body>
+<script>
 
+    var database = {
+        "type01": {
+            "mailto": "praesident@uni-goettingen.de referentin.praesident@uni-goettingen.de vizepraesident-forschung@uni-goettingen.de vizepraesidentin-finanzen@uni-goettingen.de referentin.vp-finanzen@uni-goettingen.de vizepraesidentin-berufungen@uni-goettingen.de vizepraesident-lehre@uni-goettingen.de thomas.richter@zvw.uni-goettingen.de sylvia.schmidt@zvw.uni-goettingen.de",
+            "subject": "Politische Besetzung des ZHGs",
+            "body": "Sehr geehrte Universitätsleitung\n\nWie viele Menschen glaube auch ich, dass eine Transformation in unserer Gesellschaft notwendig ist, um eine nachhaltige Zukunft zu schaffen. Dazu gehört die Schaffung von solidarischen Bewegungen, in denen Menschen zusammenarbeiten, um ihre Stimme gegen  ein ungerechtes System zu erheben und eine bessere Zukunft für alle zu schaffen. Die Besetzung und Blockierung des ZHGs ist ein Teil dieser Bewegung, um auf Themen wie Klimawandel, Umweltverschmutzung, soziale Ungleichheit und Menschenrechtsverletzungen aufmerksam zu machen, aber auch um einen Ort der Vernetzung und Zusammenarbeit zu schaffen. Denn bestehende Räume verfügen in Angesicht der verheerenden Auswirkungen von Klima- und Ökologiekrise sowie der jetzigen sozialen Missstände kaum über die notwendigen Kapazitäten. \n\nZugleich werden die Interessen von uns Studierenden bei dieser Aktionen respektiert. Die Besetzung wird auf eine friedliche und respektvolle Weise durchgeführt, die öffentliche Sicherheit wird gewährleistet und Vertretungsräume werden gefunden. Deswegen appellier ich für eine Duldung der Besetzung."
+        },
+        "type02": {
+            "mailto": "praesident@uni-goettingen.de referentin.praesident@uni-goettingen.de vizepraesident-forschung@uni-goettingen.de vizepraesidentin-finanzen@uni-goettingen.de referentin.vp-finanzen@uni-goettingen.de vizepraesidentin-berufungen@uni-goettingen.de vizepraesident-lehre@uni-goettingen.de thomas.richter@zvw.uni-goettingen.de sylvia.schmidt@zvw.uni-goettingen.de mbaehr@gwdg.de Dorothea.Bahns@mathematik.uni-goettingen.de stefan.dierkes@wiwi.uni-goettingen.de ukuees@gwdg.de mluchte@gwdg.de thomas.mueller@geo.uni-goettingen.de ramin.yahyapour@gwdg.de",
+            "subject": "Uni Besetzung für Klimagerechtigkeit",
+            "body": "Sehr geehrtes Präsidium, Sehr geehrte Senatsmitglieder\n\nDie Proteste im ZHG unterstützen meinen Eindruck, dass die im Studium vermittelten Modelle und Inhalte nicht ausreichend auf die Herausforderungen der modernen Welt vorbereiten, wie beispielsweise die Klimakrise, Ökologiekrise und soziale Krise. Sie lehren uns die Werkzeuge und Modelle die uns erst in diese Krisen führten und nicht das breite Wissen, welches uns helfen könnte die nötigen Transformationen zu gestalten.\n\nDie Proteste machen auf diese Defizite aufmerksam und sollten Bildungseinrichtungen wie die Universität Göttingen dazu bringen, ihr Curriculum entsprechend anzupassen. Es ist wichtig zu betonen, dass eine solche Änderung nur möglich ist, wenn dem Lehrpersonal als auch dem Präsidium bewusst wird, das die Extreme der Veränderungen beispiellos sind und unsere Lebensgrundlagen zerstören. Es muss ein radikaleres Umdenken stattfinden, als nur diese Herausforderungen am Rande der Vorlesungen zu nennen.\n\nIch habe beim Besuch des Protestes verstärkt das Gefühl bekommen, dass das Ziel dieser Aktion nicht ist, den Universitätsbetrieb zu blockieren, sondern vielmehr, ihn zu verbessern und sicherzustellen, dass Student:innen durch die Lehre auf die Herausforderungen der Zukunft vorbereitet werden. Letztendlich ist Bildung von entscheidender Bedeutung für die Fortbestand lebenswerter menschlicher Zivilisationen. "
+        },
+        "type03": {
+            "mailto": "praesident@uni-goettingen.de referentin.praesident@uni-goettingen.de vizepraesident-forschung@uni-goettingen.de vizepraesidentin-finanzen@uni-goettingen.de referentin.vp-finanzen@uni-goettingen.de vizepraesidentin-berufungen@uni-goettingen.de vizepraesident-lehre@uni-goettingen.de thomas.richter@zvw.uni-goettingen.de sylvia.schmidt@zvw.uni-goettingen.de mbaehr@gwdg.de Dorothea.Bahns@mathematik.uni-goettingen.de stefan.dierkes@wiwi.uni-goettingen.de ukuees@gwdg.de mluchte@gwdg.de thomas.mueller@geo.uni-goettingen.de ramin.yahyapour@gwdg.de",
+            "subject": "Aufruf zur Duldung der Unibesetzung",
+            "body": "Sehr geehrtes Präsidium, Sehr geehrte Senatsmitglieder\n\nDie Universität Göttingen sollte den disruptive Protest in Form einer Besetzung im ZHG dulden. Politische Aktionen wie diese sind ein wichtiger Weg, um den notwendigen sozial ökologischen Wandel zu fördern. Sie zeigt die Stimmung der Studentinnen und Studenten, dass wichtige Themen wie Klimawandel, Umweltverschmutzung, soziale Ungleichheit und Menschenrechtsverletzungen im Studium zu wenig Aufmerksamkeit bekommen. \n\nGleichzeitig zeigt der Protest, mit freien Workshops und Seminaren für Studentinnen und Studenten, wie praktische Fähigkeiten und Kenntnisse vermittelt werden können, um den sozial ökologischen Wandel voranzutreiben und welche wichtige Rolle die Lehre spielt die Probleme unserer Zeit zu begegnen.\n\nDas disruptive Element dieses Protestes bereitet außerdem auf die tiefgreifenden Veränderungen vor, die in der Lehre gemacht werden müssen, um den Herausforderungen unserer Zukunft gerecht zu werden.\n\nMit freundlichen Grüßen\nUnterstützer der Uni Besetzung"
+        },
+        "type04": {
+            "mailto": "praesident@uni-goettingen.de referentin.praesident@uni-goettingen.de vizepraesident-forschung@uni-goettingen.de vizepraesidentin-finanzen@uni-goettingen.de referentin.vp-finanzen@uni-goettingen.de vizepraesidentin-berufungen@uni-goettingen.de vizepraesident-lehre@uni-goettingen.de thomas.richter@zvw.uni-goettingen.de sylvia.schmidt@zvw.uni-goettingen.de mbaehr@gwdg.de Dorothea.Bahns@mathematik.uni-goettingen.de stefan.dierkes@wiwi.uni-goettingen.de ukuees@gwdg.de mluchte@gwdg.de thomas.mueller@geo.uni-goettingen.de ramin.yahyapour@gwdg.de",
+            "subject": "EndFossil:Occupy! besetzt ZHG",
+            "body": "Sehr geehrtes Präsidium, Sehr geehrte Senatsmitglieder\n\nDie disruptive Besetzung sollte von der Universität unterstützt werden. Denn der Protest trägt dazu bei, den Weg für eine sozialgerechte und ökologische Lehre zu ebnen, indem er die Aufmerksamkeit auf die Notwendigkeit von Veränderungen lenkt und die breite Unterstützung von Studierenden zeigt.\n\nDie Besetzung des ZHGs ist ein kraftvolles Instrument, um auf die Notwendigkeit von Veränderungen in der Gesellschaft aufmerksam zu machen und um den politischen Willen zu fördern, diese Veränderungen zu verwirklichen. Deshalb unterstütze ich diejenigen, die mutig genug sind, sich für die Sache der Umwelt und des sozialen Wandels einzusetzen, indem sie öffentliche Bildungseinrichtungen besetzen und als Orte der Zusammenarbeit und des Widerstands nutzen."
+        },
+        "type05": {
+            "mailto": "praesident@uni-goettingen.de referentin.praesident@uni-goettingen.de vizepraesident-forschung@uni-goettingen.de vizepraesidentin-finanzen@uni-goettingen.de referentin.vp-finanzen@uni-goettingen.de vizepraesidentin-berufungen@uni-goettingen.de vizepraesident-lehre@uni-goettingen.de thomas.richter@zvw.uni-goettingen.de sylvia.schmidt@zvw.uni-goettingen.de mbaehr@gwdg.de Dorothea.Bahns@mathematik.uni-goettingen.de stefan.dierkes@wiwi.uni-goettingen.de ukuees@gwdg.de mluchte@gwdg.de thomas.mueller@geo.uni-goettingen.de ramin.yahyapour@gwdg.de",
+            "subject": "Unterstützung der Uni Besetzung von EndFossil:Occupy!",
+            "body": "Sehr geehrte Universitätsleitung\n\nIch bekenne mich vollständig zur Unterstützung der Besetzung des ZHGs. Der Ort der vergangenen Mittwoch geschaffen wurde, ist wichtig für die Vernetzung und Zusammenarbeit im Kampf gegen die Ökologie- und Klimakrise und zur Förderung eines sozialen Wandels. Bildungseinrichtungen sind nicht nur Orte des Lernens, sondern auch der gemeinsamen Zusammenarbeit und des Austauschs von Ideen und Meinungen.\n\nIn Anbetracht der dringenden Herausforderungen, denen unsere Gesellschaft und unser Planet gegenüberstehen, ist es von entscheidender Bedeutung, dass wir uns an öffentlichen Orten versammeln, um gemeinsam Lösungen zu finden. Öffentliche Bildungseinrichtungen wie die Universität bieten eine hervorragende Möglichkeit, um diese Zusammenarbeit zu ermöglichen und uns auf den Weg zu einer gerechteren und nachhaltigeren Zukunft zu bringen. Das Präsidium muss anerkennen, welche Verantwortung die Universität Göttingen in diesem krisenbehafteten System hat und die Besetzung dulden.\n\nMit freundlichen Grüßen\nUnterstützende der Uni Besetzung"
+        },
+        "type06": {
+            "mailto": "praesident@uni-goettingen.de referentin.praesident@uni-goettingen.de vizepraesident-forschung@uni-goettingen.de vizepraesidentin-finanzen@uni-goettingen.de referentin.vp-finanzen@uni-goettingen.de vizepraesidentin-berufungen@uni-goettingen.de vizepraesident-lehre@uni-goettingen.de thomas.richter@zvw.uni-goettingen.de sylvia.schmidt@zvw.uni-goettingen.de mbaehr@gwdg.de Dorothea.Bahns@mathematik.uni-goettingen.de stefan.dierkes@wiwi.uni-goettingen.de ukuees@gwdg.de mluchte@gwdg.de thomas.mueller@geo.uni-goettingen.de ramin.yahyapour@gwdg.de",
+            "subject": "Solidarisierung mit der Unibesetzung durch Politgruppen",
+            "body": "Sehr geehrte Universitätsleitung\n\nDie Besetzung des Zentral Campus von der Gruppe EndFossil:Occupy! ist eine wichtige und notwendige Form des Protests und des zivilen Ungehorsams, um auf die Dringlichkeit der Herausforderungen hinzuweisen, denen wir gegenüberstehen. Es kann auch eine Möglichkeit sein, um den Fokus auf die Bedeutung der Bildung und des gemeinsamen Lernens in dieser Zeit der Krise zu legen. Die Universität sollte sich dieser Möglichkeit bewusst werden und die politische Aktion unterstützen.\n\nDie breite Unterstützung von Studentinnen und Studenten zeigt, dass die Universität Göttingen Träger solcher Veränderungen sein kann. Sie muss endlich ihrer Verantwortung gerecht werden und Studierende auf die Herausforderung der Zukunft vorbereiten. Viele Studierendengruppen haben schon selbst erste Schritte gezeigt und Bildungsformate erstellt, in denen die Skills und das Wissen für die notwendigen Transformation und ein System in einer lebenswerten Zukunft gelehrt wurden.\n\nMit freundlichen Grüßen\nUnterstützende der Uni Besetzung"
+        },
+        "type07": {
+            "mailto": "praesident@uni-goettingen.de referentin.praesident@uni-goettingen.de vizepraesident-forschung@uni-goettingen.de vizepraesidentin-finanzen@uni-goettingen.de referentin.vp-finanzen@uni-goettingen.de vizepraesidentin-berufungen@uni-goettingen.de vizepraesident-lehre@uni-goettingen.de thomas.richter@zvw.uni-goettingen.de sylvia.schmidt@zvw.uni-goettingen.de mbaehr@gwdg.de Dorothea.Bahns@mathematik.uni-goettingen.de stefan.dierkes@wiwi.uni-goettingen.de ukuees@gwdg.de mluchte@gwdg.de thomas.mueller@geo.uni-goettingen.de ramin.yahyapour@gwdg.de",
+            "subject": "Verantwortung der Universität bei Besetzung",
+            "body": "Sehr geehrte Georg-August-Universität Göttingen\n\nBildungseinrichtungen wie die Universität Göttingen sind wichtige Akteure bei der Schaffung einer gerechten und nachhaltigen Gesellschaft. Die derzeitige Lehre trägt aber leider weiterhin noch dazu bei das derzeitige System zu replizieren, obwohl ein breiter Konsensus unter Studierenden herrscht, dass es grundlegende Veränderungen des Systems geben muss, um eine lebenswerte Zukunft für alle zu erhalten.\n\nDeswegen unterstütze ich die Blockade und Besetzung des ZHGs. Sie zeigt wie einfach die Transformation der Lehre von statten gehen könnte. In allen Disziplinen sollten Lehrpläne vielfältiger werden, vor allem sollten Studiengänge der Wirtschaftswissenschaften die Grundlage ihrer neoklassischen Lehre verändern.\n\nDiese neoklassischen Wirtschaftsmodelle, die mit einfachen Mechanismen wirtschaftliche Grundzüge vermitteln sollen, sind in der aktuellen wirtschaftswissenschaftlichen Lehre alternativlos. \n\nDer Fokus auf mathematisch aussagekräftige Modelle soll der Ökonomie den Anschein von Naturwissenschaftlichkeit verleihen. Es geht im Studium nicht darum, etwas eigenständig zu Verstehen oder kritisch zu Hinterfragen, sondern vorgegebene Aufgaben möglichst schnell zu berechnen. Mit ihrer heilen, krisenfreien Modellwelt und ihrer starren theoretischen Dogmatik blendet die aktuelle wirtschaftswissenschaftliche Lehre weite Teile der realen wirtschaftlichen und gesellschaftlichen Entwicklungen aus. \n\nWichtige systemische Problemstellungen werden von der Neoklassik weitgehend ignoriert. Ob unser Wirtschaftssystem, welches auf stetiges Wirtschaftswachstum ausgelegt ist, auf einem Planeten mit endlichen Ressourcen funktionieren kann, bleibt offen. Dabei glauben immer mehr Lehrende gar nicht mehr an das, was im Lehrbuch steht. Zu groß sind die empirischen Wiedersprüche. Sie unterrichten es, aber verwenden es nicht mehr in der Forschung.\n\nIm Wissenschaftsbetrieb ist kein Platz für neue Ansätze. Auszubrechen bleibt schwierig, wenn die eigene Karriere nicht aufs Spiel gesetzt werden soll und führt mitunter zum kompletten Bruch mit der Disziplin. \n\nEine grundlegende Überarbeitung der Lehrpläne ist nötig, um die erforderliche sozial-ökologische Transformation zu gestalten. Immer mehr Volkswirte sind inzwischen überzeugt, dass ihr Fach vor allem nutzlose Mathematik produziert und mit einer rationalen Wissenschaft nichts mehr zu tun hat. \n\nMit der Besetzung türmt sich ein sichtliche Wut der Studierenden zusammen, weil diese Veränderungen nicht von der Universität getragen werden. Gleichzeitig zeigt sie, dass es eine große solidarische Unterstützung von der Seite der Studierenden aus gibt.\n\nMit freundlichen Grüßen"
+        },
+        "type08": {
+            "mailto": "praesident@uni-goettingen.de referentin.praesident@uni-goettingen.de vizepraesident-forschung@uni-goettingen.de vizepraesidentin-finanzen@uni-goettingen.de referentin.vp-finanzen@uni-goettingen.de vizepraesidentin-berufungen@uni-goettingen.de vizepraesident-lehre@uni-goettingen.de thomas.richter@zvw.uni-goettingen.de sylvia.schmidt@zvw.uni-goettingen.de mbaehr@gwdg.de Dorothea.Bahns@mathematik.uni-goettingen.de stefan.dierkes@wiwi.uni-goettingen.de ukuees@gwdg.de mluchte@gwdg.de thomas.mueller@geo.uni-goettingen.de ramin.yahyapour@gwdg.de",
+            "subject": "EndFossil:Occupy! besetzt Universität",
+            "body": "Sehr geehrte Georg-August-Universität Göttingen\n\nDie Protestaktion die seit Mitte dieser Woche auf dem Zentralcampus statt findet, sollte vom Präsidium geduldet werden. Auch wenn der normale Betrieb des ZHGs so unterbrochen wird, ist die Aktion moralisch korrekt. Denn die im Studium vermittelten Modelle und Inhalte sind nicht ausreichend, um uns auf die Herausforderungen der modernen Welt vorzubereiten, wie beispielsweise die Klimakrise, Ökologiekrise und soziale Krise. Sie lehren uns die Werkzeuge und Modelle die uns erst in diese Krisen führten und nicht das breite Wissen, welches uns helfen könnte die nötigen Transformationen zu gestalten.\n\nWir haben nicht viel Zeit, um radikale Veränderungen herbeizuführen, jedoch zeigt die Aktion mit ihrem Programm, welches Workshops und Vorlesungen beinhaltet, wie ein solcher Wandel aussehen kann. Die Universität sollte sich ein Beispiel nehmen und mit der Initiation dieses Wandels anfangen. Die Zukunft unserer Welt und die unserer Kinder hängt davon ab.\n\nIn Solidarisierung mit der Unibesetzung"
+        },
+        "type09": {
+            "mailto": "praesident@uni-goettingen.de referentin.praesident@uni-goettingen.de vizepraesident-forschung@uni-goettingen.de vizepraesidentin-finanzen@uni-goettingen.de referentin.vp-finanzen@uni-goettingen.de vizepraesidentin-berufungen@uni-goettingen.de vizepraesident-lehre@uni-goettingen.de thomas.richter@zvw.uni-goettingen.de sylvia.schmidt@zvw.uni-goettingen.de mbaehr@gwdg.de Dorothea.Bahns@mathematik.uni-goettingen.de stefan.dierkes@wiwi.uni-goettingen.de ukuees@gwdg.de mluchte@gwdg.de thomas.mueller@geo.uni-goettingen.de ramin.yahyapour@gwdg.de",
+            "subject": "Unterstützung der Unibesetzung",
+            "body": "Sehr geehrte Universitätsleitung\n\nDie Besetzung und Blockade vom Zentralcampus kann als gerechtfertigt angesehen werden, da diese Institutionen eine enorme Verantwortung tragen, wenn es darum geht, zukünftige Generationen auf die Herausforderungen der Zukunft vorzubereiten. In einer Zeit, in der wir mit einer Klimakrise, einer sozialen Krise und einer Ökologiekrise konfrontiert sind, ist es unerlässlich, dass die Studierenden Kenntnisse und Fähigkeiten erwerben, die ihnen helfen, diese Herausforderungen zu bewältigen.\n\nDie aktuelle wirtschaftswissenschaftliche Lehre ist oft von neoklassischen Wirtschaftsmodellen geprägt, die sich auf mathematische Formeln konzentrieren und gesellschaftliche Aspekte und ökologische Grenzen weitgehend ausblenden. Dies führt dazu, dass den Studierenden wichtige Fähigkeiten und Kenntnisse fehlen, um die Herausforderungen der Zukunft erfolgreich zu bewältigen.\n\nDaher ist es umso wichtiger, dass die Bildungseinrichtungen ihre Verantwortung ernst nehmen und ein Curriculum anbieten, das die Studierenden für eine sozial-ökologische Transformation rüstet. Eine solche Ausbildung sollte sich nicht nur auf ökonomische Modelle und mathematische Formeln konzentrieren, sondern auch soziale Aspekte, wie zum Beispiel kooperative Organisationsformen, aber auch ökologische Nachhaltigkeit und planetare Grenzen berücksichtigen.\n\nWenn die Bildungseinrichtungen ihre Verantwortung nicht ernst nehmen und die Studierenden nicht angemessen auf die Herausforderungen der Zukunft vorbereiten, ist es durchaus gerechtfertigt, die Einrichtungen zu blockieren und zu besetzen. Denn nur so kann der notwendige Druck aufgebaut werden, damit die Bildungseinrichtungen ihre Verantwortung ernst nehmen und ein Curriculum anbieten, das die Studierenden auf die Herausforderungen der Zukunft vorbereitet.\n\nMit freundlichen Grüßen\nStudierende der GAU Göttingen"
+        },
+        "type10": {
+            "mailto": "praesident@uni-goettingen.de referentin.praesident@uni-goettingen.de vizepraesident-forschung@uni-goettingen.de vizepraesidentin-finanzen@uni-goettingen.de referentin.vp-finanzen@uni-goettingen.de vizepraesidentin-berufungen@uni-goettingen.de vizepraesident-lehre@uni-goettingen.de thomas.richter@zvw.uni-goettingen.de sylvia.schmidt@zvw.uni-goettingen.de mbaehr@gwdg.de Dorothea.Bahns@mathematik.uni-goettingen.de stefan.dierkes@wiwi.uni-goettingen.de ukuees@gwdg.de mluchte@gwdg.de thomas.mueller@geo.uni-goettingen.de ramin.yahyapour@gwdg.de",
+            "subject": "Gerechtfertigte Besetzung des ZHGs",
+            "body": "Sehr geehrte Georg-August-Universität\n\nDie Besetzung und Blockade des Zentralen Hörsaal Gebäudes kann als gerechtfertigte Aktion angesehen werden, da sie die Verantwortung der Bildungseinrichtungen hervorhebt, den Studierenden die Kenntnisse und Fähigkeiten zu vermitteln, die notwendig sind, um mit den Krisen der Zukunft umzugehen. In Zeiten von Klimawandel, sozialer Ungleichheit und politischer Instabilität ist es unerlässlich, dass unsere Bildungseinrichtungen sich mit diesen Themen auseinandersetzen und die Studierenden auf die Herausforderungen vorbereiten, die in Zukunft auf sie zukommen werden.\n\nDarüber hinaus verwandelt die Besetzung das ZHG in solidarische Räume der Begegnung. Diese Räume sind ein Ort, an dem wir uns über die Bedeutung der multiplen Krisen der Gegenwart austauschen können und gemeinsam Methoden entwickeln können, um diesen Herausforderungen zu begegnen. Wir können neue Formen des Lernens und der Zusammenarbeit entwickeln, die den Bedürfnissen der Studierenden entsprechen und sie auf die Zukunft vorbereiten.\n\nDie Studierenden die hier Bildungseinrichtungen besetzen und blockieren, setzen ein starkes Signal, dass sich die Universität nicht länger mit einer Bildung zufrieden geben kann, die Studierende nicht auf die Herausforderungen der Zukunft vorbereitet. Wir fordern eine Bildung, die die Bedeutung von sozialer Gerechtigkeit, ökologischer Nachhaltigkeit und politischer Stabilität anerkennt. Ich stelle mich hinter die Forderungen für eine Bildung, die uns nicht nur darauf vorbereitet, in einer Welt zu leben, die von Krisen geprägt ist, sondern uns auch befähigt, diese Krisen zu überwinden.\n\nMit freundlichen Grüßen\nStudierende der GAU Göttingen"
+        },
+        "type11": {
+            "mailto": "praesident@uni-goettingen.de referentin.praesident@uni-goettingen.de vizepraesident-forschung@uni-goettingen.de vizepraesidentin-finanzen@uni-goettingen.de referentin.vp-finanzen@uni-goettingen.de vizepraesidentin-berufungen@uni-goettingen.de vizepraesident-lehre@uni-goettingen.de thomas.richter@zvw.uni-goettingen.de sylvia.schmidt@zvw.uni-goettingen.de mbaehr@gwdg.de Dorothea.Bahns@mathematik.uni-goettingen.de stefan.dierkes@wiwi.uni-goettingen.de ukuees@gwdg.de mluchte@gwdg.de thomas.mueller@geo.uni-goettingen.de ramin.yahyapour@gwdg.de",
+            "subject": "Solidarisierung mit der Unibesetzung",
+            "body": "Ich bekenne mich vollständig zur Unterstützung der Besetzung des ZHGs. Die Besetzung von Universitäten ist ein mutiger und notwendiger Schritt, um auf die Verantwortung aufmerksam zu machen, welche diese Institutionen tragen. Es geht nicht nur darum, Wissen zu vermitteln, sondern auch um die Vermittlung von Fähigkeiten und Perspektiven, die es den Studierenden ermöglichen, auf die komplexen Herausforderungen der Zukunft zu reagieren. \n\nDabei ist die Besetzungen des ZHGs nicht nur ein politisches Statement, sondern auch ein Akt der Solidarität und des Austauschs. Sie verwandeln die Orte in Räume der Begegnung, in denen gemeinsam über zeitgemäßes Lernen, die Bedeutung der multiplen Krisen der Gegenwart und die Organisierung dagegen diskutiert wird.\n\nDie Universitätsleitung sollte gegenüber der Besetzung positiv gestimmt sein und sie dulden. Die breite Unterstützung von Studierenden und Nicht-Studierenden zeigt welche Rolle von der Universität Göttingen eigentlich erwartet wird. Die Besetzer kommen mit durchgehend positiven Intentionen.\n\nStudierende der Uni Göttingen"
+        },
+        "type12": {
+            "mailto": "praesident@uni-goettingen.de referentin.praesident@uni-goettingen.de vizepraesident-forschung@uni-goettingen.de vizepraesidentin-finanzen@uni-goettingen.de referentin.vp-finanzen@uni-goettingen.de vizepraesidentin-berufungen@uni-goettingen.de vizepraesident-lehre@uni-goettingen.de thomas.richter@zvw.uni-goettingen.de sylvia.schmidt@zvw.uni-goettingen.de mbaehr@gwdg.de Dorothea.Bahns@mathematik.uni-goettingen.de stefan.dierkes@wiwi.uni-goettingen.de ukuees@gwdg.de mluchte@gwdg.de thomas.mueller@geo.uni-goettingen.de ramin.yahyapour@gwdg.de",
+            "subject": "Besetzung des Zentralen Hörsaal Gebäudes",
+            "body": "Ich bekenne mich zur Unterstützung von der politischen Aktion die Mitte diesen Monats als Besetzung und Blockade des Zentralen Hörsaal Gebäudes durch Studierende gestartet ist. Die Besetzung ist gerechtfertigt, weil Bildungseinrichtungen eine riesige Verantwortung tragen, den Studierenden Kenntnisse und Fähigkeiten zu vermitteln, um mit den Krisen der Zukunft umzugehen. Welche momentan von der Universität Göttingen noch nicht wahr genommen wird. Die Besetzung wandelt das Hörsaal Gebäude in einen solidarischen Räum um, in denen zeitgemäßes Lernen und der Austausch über die Herausforderungen unserer Zeit stattfinden kann.\n\nPolitische Aktionen wie diese ist ein wichtiger Weg, um den sozial-ökologischen Wandel zu fördern. Die Aktion spiegelt die Stimmung der Studierenden wider, dass wichtige soziale und ökologische Themen im Studium zu wenig Beachtung finden. Der Protest zeigt auch, dass die Lehre eine wichtige Rolle spielt, um praktische Fähigkeiten und Kenntnisse zu vermitteln, um den Wandel voranzutreiben.\n\nDas disruptives Element der Besetzung soll von der Universität geduldet werden. Es sollte tiefgreifenden Veränderungen in der Lehre fördern, die notwendig sind, um den Herausforderungen unserer Zukunft gerecht zu werden. Durch die Organisation von freien Workshops und Seminaren zeigen die Studierenden, dass es möglich ist, Lehre und Lernen auf eine neue Art und Weise zu gestalten, um den sozial-ökologischen Wandel zu fördern. Ich schließe mich dem an und fordere das gleiche nun von der Universität.\n\nIn Solidarisierung mit der Besetzung"
+        },
+        "type13": {
+            "mailto": "praesident@uni-goettingen.de referentin.praesident@uni-goettingen.de vizepraesident-forschung@uni-goettingen.de vizepraesidentin-finanzen@uni-goettingen.de referentin.vp-finanzen@uni-goettingen.de vizepraesidentin-berufungen@uni-goettingen.de vizepraesident-lehre@uni-goettingen.de thomas.richter@zvw.uni-goettingen.de sylvia.schmidt@zvw.uni-goettingen.de mbaehr@gwdg.de Dorothea.Bahns@mathematik.uni-goettingen.de stefan.dierkes@wiwi.uni-goettingen.de ukuees@gwdg.de mluchte@gwdg.de thomas.mueller@geo.uni-goettingen.de ramin.yahyapour@gwdg.de",
+            "subject": "Appell an die Universität nach Besetzung",
+            "body": "Sehr geehrte Universitätsleitung\n\nIch bin überzeugt davon, dass die Besetzung der Universität von Aktivisten ein wichtiger Weg ist, um auf die Notwendigkeit des sozial-ökologischen Wandels hinzuweisen. Die Studierenden müssen eine kritische und reflektierte Haltung gegenüber der Lehrinhalte entwickeln, um sich den Herausforderungen der Zukunft zu stellen. Denn eine Lehre von Konzepten und Fertigkeiten die das jetzige System repliziert, würde es nicht schaffen die Krisen unserer Zeit zu überwinden. Es ist daher verständlich, dass sie eine Besetzung als politische Aktion nutzen, um ihre Forderungen und Bedenken auszudrücken.\n\nIch finde es besonders wichtig, dass die Besetzung Räume der Solidarität und Begegnung schafft, in denen Studierende zusammenkommen, um über Probleme zu sprechen und sich auszutauschen. Durch freie Workshops und Seminare können praktische Fähigkeiten und Kenntnisse vermittelt werden, die den sozial-ökologischen Wandel vorantreiben. Hier zeigt sich die wichtige Rolle der Lehre bei der Lösung der Probleme unserer Zeit.\n\nDie Besetzung mag als disruptiv empfunden werden, aber sie bereitet uns auf die tiefgreifenden Veränderungen vor, die in der Lehre gemacht werden müssen, um den Herausforderungen unserer Zukunft gerecht zu werden. Die Studierenden haben das Recht, ihre Stimme zu erheben und ihre Meinung zu äußern. Deshalb unterstütze ich die Besetzung von Bildungseinrichtungen als ein legitimes Mittel, um die Aufmerksamkeit auf die wichtigen Themen des sozial-ökologischen Wandels zu lenken.\n\nMit freundlichen Grüßen\nStudierende an der Uni Göttingen"
+        },
+        "type14": {
+            "mailto": "praesident@uni-goettingen.de referentin.praesident@uni-goettingen.de vizepraesident-forschung@uni-goettingen.de vizepraesidentin-finanzen@uni-goettingen.de referentin.vp-finanzen@uni-goettingen.de vizepraesidentin-berufungen@uni-goettingen.de vizepraesident-lehre@uni-goettingen.de thomas.richter@zvw.uni-goettingen.de sylvia.schmidt@zvw.uni-goettingen.de mbaehr@gwdg.de Dorothea.Bahns@mathematik.uni-goettingen.de stefan.dierkes@wiwi.uni-goettingen.de ukuees@gwdg.de mluchte@gwdg.de thomas.mueller@geo.uni-goettingen.de ramin.yahyapour@gwdg.de",
+            "subject": "Unterstützung der Unibesetzung",
+            "body": "Sehr geehrte Universitätsleitung\n\nIch unterstütze die Besetzung von der Universität Göttingen durch Aktivist:innen, weil sie eine wichtige politische Aktion ist, um den notwendigen sozial-ökologischen Wandel zu fördern. Die Besetzung zeigt, dass wichtige Themen wie Klimawandel, Umweltverschmutzung, soziale Ungleichheit und Menschenrechtsverletzungen im Studium zu wenig Aufmerksamkeit bekommen. Die freien Workshops und Seminare, die im Rahmen der Besetzung angeboten werden, vermitteln praktische Fähigkeiten und Kenntnisse, um den sozial-ökologischen Wandel voranzutreiben. Die Besetzung verwandelt das ZHG in einen Raum der Begegnung, in dem sich Studierende darüber austauschen können, was die multiplen Krisen der Gegenwart für uns bedeuten und wie wir uns gegen sie organisieren können.\n\nIch glaube auch, dass die Bildungseinrichtungen durch diese politische Aktion keinen Schaden nehmen werden. Im Gegenteil: die Besetzung zeigt den Bildungseinrichtungen, dass sie eine wichtige Rolle dabei spielen können, den Herausforderungen unserer Zeit gerecht zu werden. Indem sie sich für eine Unterstützung der Besetzung aussprechen, können die Bildungseinrichtungen ein positives Signal setzen, dass sie bereit sind, sich für einen Wandel einzusetzen.\n\nIch denke, es ist wichtig, dass die Universität Göttingen die Besetzung unterstützt und sich für eine Lehre einsetzt, die die Probleme unserer Zeit ernst nimmt. Die disruptive Natur dieses Protests bereitet auf die tiefgreifenden Veränderungen vor, die in der Lehre gemacht werden müssen, um den Herausforderungen unserer Zukunft gerecht zu werden.\n\nMit freundlichen Grüßen\nStudierende an der Uni Göttingen"
+        },
+        "type15": {
+            "mailto": "praesident@uni-goettingen.de referentin.praesident@uni-goettingen.de vizepraesident-forschung@uni-goettingen.de vizepraesidentin-finanzen@uni-goettingen.de referentin.vp-finanzen@uni-goettingen.de vizepraesidentin-berufungen@uni-goettingen.de vizepraesident-lehre@uni-goettingen.de thomas.richter@zvw.uni-goettingen.de sylvia.schmidt@zvw.uni-goettingen.de mbaehr@gwdg.de Dorothea.Bahns@mathematik.uni-goettingen.de stefan.dierkes@wiwi.uni-goettingen.de ukuees@gwdg.de mluchte@gwdg.de thomas.mueller@geo.uni-goettingen.de ramin.yahyapour@gwdg.de",
+            "subject": "Appell zur Solidarisierung mit der Unibesetzung",
+            "body": "Ich bin überzeugt davon, dass die politische Aktion auf dem Zentralcampus unterstützt werden sollte. Natürlich ist es wichtig zu betonen, dass eine Besetzung oder Blockade der Universität keine physischen Schäden an der Infrastruktur verursachen sollte. Doch die Tatsache, dass viele Angestellte und Studierende diese Proteste als Störfaktor betrachten, verkennt die Tatsache, dass die Lehre und Bildung eine politische Angelegenheit ist. Es geht nicht nur um den Transfer von Wissen, sondern auch um die Vermittlung von Werten, Perspektiven und Handlungsoptionen, die notwendig sind, um eine bessere Welt zu gestalten.\n\nIn dieser Hinsicht sollten sich Bildungseinrichtungen nicht von politischen Aktionen wie Besetzungen oder Blockaden einschüchtern lassen, sondern die Chance nutzen, um ihre Verantwortung als Institutionen des Wandels zu erkennen und zu erfüllen. Indem sie sich mit den Studierenden solidarisieren und offen für den Dialog und Austausch sind, können sie nicht nur dazu beitragen, dass sich diese Bewegungen in eine positive Richtung entwickeln, sondern auch ihre eigene Lehre und Bildungspraktiken verbessern.\n\nDie notwendigen Veränderungen in Wirtschaft und Gesellschaft für eine lebenswerte Zukunft, basieren auf den Theorien der Lehre, welche schon heute Schülern und Studierenden beigebracht werden. Doch die Fertigkeiten und Kenntnisse die notwendig sind, um eine bessere Welt zu gestalten fehlen, denn als Lehrende auszubrechen und grundlegende Veränderungen in der Lehre vorzunehmen bleibt schwierig, wenn die eigene Karriere nicht aufs Spiel gesetzt werden soll.\n\nLetztendlich geht es bei der Unterstützung von politischen Aktionen wie der Besetzung von Bildungseinrichtungen darum, eine Verbindung zwischen Theorie und Praxis herzustellen und die Ideale der akademischen Freiheit und demokratischen Partizipation zu verteidigen. Wenn wir uns gemeinsam für eine bessere Welt einsetzen, können wir nicht nur die Qualität der Bildung und Lehre verbessern, sondern auch eine positive Veränderung in unserer Gesellschaft bewirken.\n\nIn Solidarisierung mit der Unibesetzung"
+        },
+        "type16": {
+            "mailto": "praesident@uni-goettingen.de referentin.praesident@uni-goettingen.de vizepraesident-forschung@uni-goettingen.de vizepraesidentin-finanzen@uni-goettingen.de referentin.vp-finanzen@uni-goettingen.de vizepraesidentin-berufungen@uni-goettingen.de vizepraesident-lehre@uni-goettingen.de thomas.richter@zvw.uni-goettingen.de sylvia.schmidt@zvw.uni-goettingen.de mbaehr@gwdg.de Dorothea.Bahns@mathematik.uni-goettingen.de stefan.dierkes@wiwi.uni-goettingen.de ukuees@gwdg.de mluchte@gwdg.de thomas.mueller@geo.uni-goettingen.de ramin.yahyapour@gwdg.de",
+            "subject": "Appell zur Unterstützung der Besetzung von EndFossil:Occupy!",
+            "body": "Sehr geehrte Universitätsleitung\n\nDie Unterstützung der Besetzung von Bildungseinrichtungen wie der Göttinger Universität ist entscheidend, da die notwendigen Veränderungen in Wirtschaft und Gesellschaft für eine lebenswerte Zukunft auf den Theorien der Lehre basieren, die Schülern und Studierenden bereits heute vermittelt werden. Doch es fehlen oft die notwendigen Fertigkeiten und Kenntnisse, um eine bessere Welt zu gestalten. Als Lehrende auszubrechen und grundlegende Veränderungen in der Lehre vorzunehmen bleibt schwierig, wenn die eigene Karriere nicht aufs Spiel gesetzt werden soll. Politische Aktionen wie die Besetzung von Bildungseinrichtungen sind ein wichtiger Weg, um den notwendigen sozial-ökologischen Wandel zu fördern und die Lehre auf die Herausforderungen unserer Zeit auszurichten.\n\nEs ist wichtig zu betonen, dass die Besetzung keine Schäden für die Bildungseinrichtungen mit sich bringen sollte. Im Gegenteil, die Unterstützung der Besetzung durch die Einrichtungen selbst würde zeigen, dass sie sich aktiv für den Fortschritt einsetzen und bereit sind, Verantwortung für eine nachhaltigere Zukunft zu übernehmen. Die Einrichtungen sollten die Besetzung als Chance sehen, um mit den Studierenden in einen offenen Dialog zu treten und gemeinsam neue Wege zu finden, um die Lehre an die Bedürfnisse der Gegenwart und Zukunft anzupassen.\n\nStudierende der Uni Göttingen"
+        }
+    }
+
+    let URLparams = new URLSearchParams(location.search)
+
+    try {
+
+        function randomIntFromInterval(min, max) { // min and max included 
+            return Math.floor(Math.random() * (max - min + 1) + min)
+        }
+        function rndmKey4database() {
+            // Error warning, when database has more than 99 entries!!!
+            return String(randomIntFromInterval(1, Object.keys(database).length)).padStart(2, "0")
+        }
+
+
+        function generateMail(id) {
+
+            var rndmKey = "type" + id
+
+            var rndmMail = database[rndmKey]
+
+            console.warn(rndmMail, rndmKey)
+
+            // NOW encoding subject and body so it is a URI component
+            var link = "mailto:" + rndmMail["mailto"] + "?subject=" + encodeURIComponent(rndmMail["subject"]) + "&body=" + encodeURIComponent(rndmMail["body"])
+
+            // adding html component
+            document.getElementById('wrapmail').innerHTML = '<a href="' + link + '"><button id="mail">Mail an Uni verfassen</button></a>'
+
+            // inserting values
+            document.getElementById('mailto').value = rndmMail["mailto"]
+            document.getElementById('subject').value = rndmMail["subject"]
+            var textarea = document.getElementById('body')
+            textarea.value = rndmMail["body"]
+            textarea.style.height = "1px"
+            textarea.style.height = (25 + textarea.scrollHeight) + "px"
+        }
+
+
+        // on load
+        if (URLparams.get("id")) {
+            let URL_id = parseInt(URLparams.get("id"))
+            console.warn(URL_id)
+            // Error warning, when database has more than 99 entries!!!
+            let key = String((URL_id)).padStart(2, "0")
+            if ("type" + key in database) {
+                generateMail(key)
+            }
+            else {
+                generateMail(rndmKey4database())
+            }
+
+        }
+        else {
+            generateMail(rndmKey4database())
+        }
+
+
+        // on generate click
+        document.getElementById('generate').addEventListener('click', (e) => {
+
+            generateMail(rndmKey4database())
+
+        })
+
+        if (URLparams.get("static") != null) {
+            document.getElementById('generate').style.display = "none"
+        }
+
+        // ========================================
+        //               ADMIN - AREA
+        // ========================================
+        // shown when get parameter admin is set
+        var DOMbutton_add2DB = document.getElementById('add')
+        var DOMbutton_downlDB = document.getElementById('downl')
+
+
+        if (URLparams.get("admin") != null) {
+            DOMbutton_add2DB.style.display = 'block';
+            DOMbutton_downlDB.style.display = 'block';
+        }
+
+        DOMbutton_add2DB.addEventListener('click', (e) => {
+
+            var newkey = "type" + String((Object.keys(database).length + 1)).padStart(2, "0")
+            database[newkey] = { "mailto": document.getElementById('mailto').value, "subject": document.getElementById('subject').value, "body": document.getElementById('body').value }
+            console.warn("add was triggered:", database)
+        })
+        DOMbutton_downlDB.addEventListener('click', (e) => {
+            const filename = 'data.json';
+            const jsonStr = JSON.stringify(database);
+
+            let element = document.createElement('a');
+            element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(jsonStr));
+            element.setAttribute('download', filename);
+
+            element.style.display = 'none';
+            document.body.appendChild(element);
+
+            element.click();
+            document.body.removeChild(element);
+        })
+
+    }
+    catch (e) {
+        alert("Es ist ein Fehler aufgetreten, bitte gebe beim Info-Point bescheid! Danke :)")
+    }
+</script>
 </html>
