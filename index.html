@@ -242,13 +242,13 @@
             console.warn(rndmMail, rndmKey)
 
             // NOW encoding subject and body so it is a URI component
-            var link = "mailto:" + rndmMail["mailto"] + "?subject=" + encodeURIComponent(rndmMail["subject"]) + "&body=" + encodeURIComponent(rndmMail["body"])
+            var link = "mailto:" + rndmMail["mailto"].replaceAll(" ",",") + "?subject=" + encodeURIComponent(rndmMail["subject"]) + "&body=" + encodeURIComponent(rndmMail["body"])
 
             // adding html component
             document.getElementById('wrapmail').innerHTML = '<a href="' + link + '"><button id="mail">Mail an Uni verfassen</button></a>'
 
             // inserting values
-            document.getElementById('mailto').value = rndmMail["mailto"].replace(" ", ",")
+            document.getElementById('mailto').value = rndmMail["mailto"].replaceAll(" ", ",")
             document.getElementById('subject').value = rndmMail["subject"]
             var textarea = document.getElementById('body')
             textarea.value = rndmMail["body"]
